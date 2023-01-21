@@ -26,22 +26,36 @@ function App() {
   }
 
   function handleAddPlaneteer(newPlaneteer) {
-    fetch('http://localhost:8003/planeteers', {
+    fetch("http://localhost:8003/planeteers", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(newPlaneteer)
+      body: JSON.stringify(newPlaneteer),
     })
-    .then(res => res.json())
-    .then(data => setPlaneteers([...planeteers, data]))
+      .then((res) => res.json())
+      .then((data) => setPlaneteers([...planeteers, data]));
   }
 
+  function handleSortChange(checked) {
+    if (checked) {
+      setPlaneteers(
+        planeteersToDisplay.sort((a, b) => {
+          return b.born - a.born;
+        })
+      );
+    } else {
+      setPlaneteers(planeteersToDisplay.sort((a, b) => b.id - a.id));
+    }
+  }
 
   return (
     <div>
       <Header />
-      <SearchBar onSearchChange={handleSearchChange} />
+      <SearchBar
+        onSearchChange={handleSearchChange}
+        onSortChange={handleSortChange}
+      />
       <RandomButton onAddPlaneteer={handleAddPlaneteer} />
       <PlaneteersContainer planeteers={planeteersToDisplay} />
     </div>
