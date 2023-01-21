@@ -24,11 +24,25 @@ function App() {
   function handleSearchChange(newSearchTerm) {
     setSearchTerm(newSearchTerm);
   }
+
+  function handleAddPlaneteer(newPlaneteer) {
+    fetch('http://localhost:8003/planeteers', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(newPlaneteer)
+    })
+    .then(res => res.json())
+    .then(data => setPlaneteers([...planeteers, data]))
+  }
+
+
   return (
     <div>
       <Header />
       <SearchBar onSearchChange={handleSearchChange} />
-      <RandomButton />
+      <RandomButton onAddPlaneteer={handleAddPlaneteer} />
       <PlaneteersContainer planeteers={planeteersToDisplay} />
     </div>
   );
